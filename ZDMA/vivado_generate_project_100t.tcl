@@ -82,7 +82,7 @@ if { $validate_required } {
 }
 
 # Create project
-create_project ${_xil_proj_name_} ./${_xil_proj_name_} -part xc7a100tfgg484-2
+create_project ${_xil_proj_name_} ./${_xil_proj_name_} -part xc7a100tfgg484-1
 
 # Set the directory path for the new project
 set proj_dir [get_property directory [current_project]]
@@ -94,7 +94,7 @@ set_property -name "enable_vhdl_2008" -value "1" -objects $obj
 set_property -name "ip_cache_permissions" -value "read write" -objects $obj
 set_property -name "ip_output_repo" -value "$proj_dir/${_xil_proj_name_}.cache/ip" -objects $obj
 set_property -name "mem.enable_memory_map_generation" -value "1" -objects $obj
-set_property -name "part" -value "xc7a100tfgg484-2" -objects $obj
+set_property -name "part" -value "xc7a100tfgg484-1" -objects $obj
 set_property -name "platform.description" -value "Vivado generated DSA" -objects $obj
 set_property -name "sim.central_dir" -value "$proj_dir/${_xil_proj_name_}.ip_user_files" -objects $obj
 set_property -name "sim.ip.auto_export_scripts" -value "1" -objects $obj
@@ -545,7 +545,7 @@ set_property -name "processing_order" -value "EARLY" -objects $file_obj
 
 # Set 'constrs_1' fileset properties
 set obj [get_filesets constrs_1]
-set_property -name "target_part" -value "xc7a100tfgg484-2" -objects $obj
+set_property -name "target_part" -value "xc7a100tfgg484-1" -objects $obj
 
 # Create 'sim_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sim_1] ""]} {
@@ -565,6 +565,11 @@ set_property -name "top_auto_set" -value "0" -objects $obj
 # Upgrade IP from the currently installed Vivado version
 upgrade_ip [get_ips *]
 
+# Generate all IP cores before synthesis
+puts "Generating IP cores..."
+generate_target all [get_ips *]
+puts "IP core generation completed."
+
 # Set 'utils_1' fileset object
 set obj [get_filesets utils_1]
 # Empty (no sources present)
@@ -574,7 +579,7 @@ set obj [get_filesets utils_1]
 
 # Create 'synth_1' run (if not found)
 if {[string equal [get_runs -quiet synth_1] ""]} {
-    create_run -name synth_1 -part xc7a100tfgg484-2 -flow {Vivado Synthesis 2023} -strategy "Flow_PerfOptimized_high" -report_strategy {No Reports} -constrset constrs_1
+    create_run -name synth_1 -part xc7a100tfgg484-1 -flow {Vivado Synthesis 2023} -strategy "Flow_PerfOptimized_high" -report_strategy {No Reports} -constrset constrs_1
 } else {
   set_property strategy "Flow_PerfOptimized_high" [get_runs synth_1]
   set_property flow "Vivado Synthesis 2023" [get_runs synth_1]
@@ -593,7 +598,7 @@ if { $obj != "" } {
 }
 set obj [get_runs synth_1]
 set_property -name "needs_refresh" -value "1" -objects $obj
-set_property -name "part" -value "xc7a100tfgg484-2" -objects $obj
+set_property -name "part" -value "xc7a100tfgg484-1" -objects $obj
 set_property -name "auto_incremental_checkpoint" -value "1" -objects $obj
 set_property -name "strategy" -value "Flow_PerfOptimized_high" -objects $obj
 set_property -name "steps.synth_design.args.directive" -value "PerformanceOptimized" -objects $obj
@@ -608,7 +613,7 @@ current_run -synthesis [get_runs synth_1]
 
 # Create 'impl_1' run (if not found)
 if {[string equal [get_runs -quiet impl_1] ""]} {
-    create_run -name impl_1 -part xc7a100tfgg484-2 -flow {Vivado Implementation 2023} -strategy "Performance_ExtraTimingOpt" -report_strategy {No Reports} -constrset constrs_1 -parent_run synth_1
+    create_run -name impl_1 -part xc7a100tfgg484-1 -flow {Vivado Implementation 2023} -strategy "Performance_ExtraTimingOpt" -report_strategy {No Reports} -constrset constrs_1 -parent_run synth_1
 } else {
   set_property strategy "Performance_ExtraTimingOpt" [get_runs impl_1]
   set_property flow "Vivado Implementation 2023" [get_runs impl_1]
@@ -822,7 +827,7 @@ set_property -name "options.warn_on_violation" -value "1" -objects $obj
 
 }
 set obj [get_runs impl_1]
-set_property -name "part" -value "xc7a100tfgg484-2" -objects $obj
+set_property -name "part" -value "xc7a100tfgg484-1" -objects $obj
 set_property -name "strategy" -value "Performance_ExtraTimingOpt" -objects $obj
 set_property -name "steps.place_design.args.directive" -value "ExtraTimingOpt" -objects $obj
 set_property -name "steps.phys_opt_design.args.directive" -value "Explore" -objects $obj

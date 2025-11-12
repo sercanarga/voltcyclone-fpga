@@ -9,7 +9,7 @@
 // Purpose     : This is a Verilog netlist of the current design or from a specific cell of the design. The output is an
 //               IEEE 1364-2001 compliant Verilog HDL file that contains netlist information obtained from the input
 //               design files.
-// Device      : xc7a100tfgg484-2
+// Device      : xc7a100tfgg484-1
 // --------------------------------------------------------------------------------
 `timescale 1 ps / 1 ps
 

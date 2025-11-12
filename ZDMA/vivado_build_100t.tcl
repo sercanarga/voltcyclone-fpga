@@ -3,6 +3,13 @@
 # source vivado_build.tcl -notrace
 #
 puts "-------------------------------------------------------"
+puts " GENERATING IP CORES.                                  "
+puts "-------------------------------------------------------"
+# Generate all IP cores before synthesis
+puts "Generating IP cores..."
+generate_target all [get_ips *]
+puts "IP core generation completed."
+puts "-------------------------------------------------------"
 puts " STARTING SYNTHESIS STEP.                              "
 puts "-------------------------------------------------------"
 launch_runs -jobs 6 synth_1
