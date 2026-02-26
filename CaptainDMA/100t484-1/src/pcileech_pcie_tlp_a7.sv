@@ -31,6 +31,9 @@ module pcileech_pcie_tlp_a7(
     // Convert received TLPs from PCIe core and transmit onwards:
     // ------------------------------------------------------------------------
     IfAXIS128 tlps_filtered();
+    // Tie-off undriven IfAXIS128 signals (source_lite/sink_lite omit tready/has_data)
+    assign tlps_filtered.tready = 1'b0;
+    assign tlps_filtered.has_data = 1'b0;
     
     pcileech_tlps128_bar_controller i_pcileech_tlps128_bar_controller(
         .rst            ( rst                           ),

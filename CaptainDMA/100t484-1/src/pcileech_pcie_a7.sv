@@ -91,6 +91,9 @@ module pcileech_pcie_a7(
         .tlps_out                   ( tlps_rx.source_lite       )
     );
     
+    // Tie-off undriven IfAXIS128 signals (source_lite omits tready/has_data)
+    assign tlps_rx.has_data = 1'b0;
+    
     pcileech_pcie_tlp_a7 i_pcileech_pcie_tlp_a7(
         .rst                        ( rst_subsys                ),
         .clk_pcie                   ( clk_pcie                  ),
@@ -285,6 +288,7 @@ module pcileech_tlps128_dst64(
     assign tlp_tx.last  = d1_tvalid ? d1_tlast : (tlps_in.tlast && !tlps_in.tkeepdw[2]);
     assign tlp_tx.keep  = tkeepdw2 ? 8'hff : 8'h0f;
     assign tlp_tx.valid = d1_tvalid || tlps_in.tvalid;
+    assign tlp_tx.user  = 22'b0;
     
     always @ ( posedge clk_pcie ) begin
         d1_tvalid    <= !rst && tlps_in.tvalid && tlps_in.tkeepdw[2];
