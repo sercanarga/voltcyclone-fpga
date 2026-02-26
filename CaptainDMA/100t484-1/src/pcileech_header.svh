@@ -242,9 +242,15 @@ endinterface
 // Interface connecting PCIe CORE config to FIFO
 // ------------------------------------------------------------------------
 interface IfPCIeFifoCore;
+    wire                clk100_en;
     // PCIe optional config
     wire                pcie_rst_core;
     wire                pcie_rst_subsys;
+    wire    [15:0]      pcie_cfg_vend_id;
+    wire    [15:0]      pcie_cfg_dev_id;
+    wire    [7:0]       pcie_cfg_rev_id;
+    wire    [15:0]      pcie_cfg_subsys_vend_id;
+    wire    [15:0]      pcie_cfg_subsys_id;
     // DRP config
     wire                drp_rdy;
     wire    [15:0]      drp_do;
@@ -255,11 +261,11 @@ interface IfPCIeFifoCore;
     
     modport mp_fifo (
         input drp_rdy, drp_do,
-        output pcie_rst_core, pcie_rst_subsys, drp_en, drp_we, drp_addr, drp_di
+        output clk100_en, pcie_rst_core, pcie_rst_subsys, pcie_cfg_vend_id, pcie_cfg_dev_id, pcie_cfg_rev_id, pcie_cfg_subsys_vend_id, pcie_cfg_subsys_id, drp_en, drp_we, drp_addr, drp_di
     );
 
     modport mp_pcie (
-        input pcie_rst_core, pcie_rst_subsys, drp_en, drp_we, drp_addr, drp_di,
+        input clk100_en, pcie_rst_core, pcie_rst_subsys, pcie_cfg_vend_id, pcie_cfg_dev_id, pcie_cfg_rev_id, pcie_cfg_subsys_vend_id, pcie_cfg_subsys_id, drp_en, drp_we, drp_addr, drp_di,
         output drp_rdy, drp_do
     );
 endinterface
